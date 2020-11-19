@@ -131,3 +131,12 @@ Finally, expose the port and run the startup script:
 EXPOSE 8080
 CMD ["./startup.sh"]
 ```
+We now have a complete Dockerfile. Build the image by running this command:
+
+```
+sudo docker build . -t <dockerhubusername>/badwebapp
+```
+
+
+## Part 3 - Push to Github
+
