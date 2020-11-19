@@ -137,6 +137,40 @@ We now have a complete Dockerfile. Build the image by running this command:
 sudo docker build . -t <dockerhubusername>/badwebapp
 ```
 
+Confirm that you have the docker image built
+
+```
+sudo docker image list
+```
+
+Finally, let's run the container and check to see if it's working correctly:
+
+```
+sudo docker run --rm -d -p <DEST_PORT>:8080 <IMAGE_NAME>
+```
+Congratulations! You now have a containerized Web Application!
 
 ## Part 3 - Push to Github
 
+Let's now push our code to Github. <br><br>
+
+First add the changes you want to commit. The following command all of the changes.
+
+```
+git add -A
+```
+
+Next, we must commit the changes. Specify a message relevant, like "Initial commit".
+
+```
+git commit -m "<Update Message>"
+```
+
+Finally, let's push our committed changes to Github
+
+```
+git push
+```
+
+Next, we will build our pipeline!
+## 
