@@ -30,5 +30,58 @@ git clone <your_repository_url>
 Next, download the source code for the python web application. Located HERE. Copy the extracted files into the git repository that you created. The file structure should look like:
 
 ```
-<your_repo>
-    
+.
+├── nginx.default
+└── VulnerableWebApp
+    ├── badcommand
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── forms.py
+    │   ├── __init__.py
+    │   ├── migrations
+    │   │   ├── 0001_initial.py
+    │   │   ├── __init__.py
+    │   │   └── __pycache__
+    │   │       ├── 0001_initial.cpython-38.pyc
+    │   │       └── __init__.cpython-38.pyc
+    │   ├── models.py
+    │   ├── __pycache__
+    │   ├── templates
+    │   │   └── badcommand
+    │   │       ├── index.html
+    │   │       ├── results.html
+    │   │       └── test.html
+    │   ├── tests.py
+    │   ├── urls.py
+    │   └── views.py
+    ├── db.sqlite3
+    ├── manage.py
+    ├── requirements.txt
+    ├── startup.sh
+    └── VulnerableWebApp
+        ├── asgi.py
+        ├── __init__.py
+        ├── __pycache__
+        ├── settings.py
+        ├── startup.sh
+        ├── urls.py
+        └── wsgi.py
+```
+
+This is a web application built on Django. We will use this as the base for our Docker CI/CD excersise. <br><br>
+
+
+First, run the application locally to ensure that it is working properly.
+
+Install the requirements:
+
+```
+cd VulnerableWebApp
+pip3 install -r requirements.txt
+```
+
+Next, start the builtin webserver:
+
+```
+python3 manage.py runserver 0.0.0.0:1337
+```
