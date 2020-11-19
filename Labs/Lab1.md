@@ -19,7 +19,7 @@ Docker<br>
 I've include configure.sh that installs the tools on linux.
 
 
-## Part 1
+## Part 1 - Web Application
 
 First, let's create a new repository on Github. It can be a public repository as there is nothing confidential. Once is it created, run the following command:
 
@@ -71,7 +71,7 @@ Next, download the source code for the python web application. Located HERE. Cop
 This is a web application built on Django. We will use this as the base for our Docker CI/CD excersise. <br><br>
 
 
-First, run the application locally to ensure that it is working properly.
+First, run the application locally to ensure that it is working properly.<br>
 
 Install the requirements:
 
@@ -84,4 +84,50 @@ Next, start the builtin webserver:
 
 ```
 python3 manage.py runserver 0.0.0.0:1337
+```
+Browse to the ip address of your linux VM and you should see a webpage.<br>
+You can also go to http://<ip_address>:1337/test <br><br>
+
+Great! The web application is now working. Let's now go and containerize this web application.
+
+## Part 2 - Using Docker
+
+In order to containerize our application, we need to create a Dockerfile. This file is responsible for choosing the base image and running any required configuration. Start by creating a Dockerfile and open it in a text editor. <br><br>
+
+
+First, let's choose a base image to build our configuration on:
+```
+#Dockerfile
+FROM  python:3.8-slim-buster
+```
+
+Next, we need to install NGINX to run as the webserver.
+
+```
+#Install NGINX
+RUN apt-get update && apt-get install nginx -y --no-install-recommends
+COPY nginx.default /etc/nginx/sites-available/default
+```
+
+Then we need to copy our code to the container and set the working directory.
+
+```
+RUN mkdir /VulnerableWebApp
+COPY . /VulnerableWebApp
+
+
+WORKDIR /VulnerableWebApp/VulnerableWebApp
+```
+
+Next, install the requirements to run the application:
+
+```
+RUN pip install -r requirements.txt
+```
+
+Finally, expose the port and run the startup script:
+
+```
+EXPOSE 8080
+CMD ["./startup.sh"]
 ```
