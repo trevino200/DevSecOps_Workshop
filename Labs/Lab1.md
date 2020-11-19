@@ -213,8 +213,18 @@ jobs:
     runs-on: ubuntu-latest
 ```
 
-Define the variables. These must be define in the pipeline.yml file as well as secrets within. 
+Define the variables. These must be define in the pipeline.yml file as well as secrets within Github. To add the secrets within github, go to Settings > Secrets. Once you have defined the secrets within Github, you can then reference them in your pipeline script. We are going to define them as environment variables. This token is required to push the image to Dockerhub.
 
+```
+    env:
+      working-directory: .
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+```
 
+Define the first step. This is copying the code to the runner.
 
-
+```
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v1
+```
