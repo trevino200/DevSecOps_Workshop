@@ -8,13 +8,13 @@ The purpose of this lab is to learn how to use Git, Docker and build a simple CI
 In order to run the labs, please ensure you have:<br><br>
 
 Github Account<br>
-Dockerhub Account<br>
-Azure Account<br>
+Dockerhub Account with API key<br>
+Azure Account with App Registration that has "Contributor" permission (for later lab)<br>
 <br>
 AZ CLI<br>
-Kubectl<br>
 Docker<br>
-Helm<br>
+Kubectl(for later lab)<br>
+Helm(for later lab)<br>
 <br>
 
 This can all be done on either Windows or Linux. Either way, please make sure you have all the tools defined above. I've include configure.sh that installs the tools on linux.
@@ -189,6 +189,7 @@ cd workflows
 ```
 
 Navigate to the new directory and create a file called pipeline.ynl. Open that file in a text editor. <br>
+<b> NOTE: Follow along to see the required indentation. YAML is very specific about whitespace.</b>
 
 Let's begin by defining the name and the trigger for the pipeline:
 
@@ -200,8 +201,19 @@ on:
     branches:
     - main
 ```
-This means that any time there is a push to the main branch, that the pipeline will run.
+This means that any time there is a push to the main branch, that the pipeline will run. <br>
+<br>
 
+Next, define the job and the environment:
+
+```
+jobs:
+  Pipeline-Job:
+    name: 'My First Pipeline Job'
+    runs-on: ubuntu-latest
+```
+
+Define the variables. These must be define in the pipeline.yml file as well as secrets within. 
 
 
 
