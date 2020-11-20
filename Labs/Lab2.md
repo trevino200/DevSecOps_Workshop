@@ -73,7 +73,7 @@ kubectl create namespace <NAMESPACE_NAME>
 
 Next, create a file, called app.yml. This is where we will define the configuration for our web application. <br>
 
-I recommend typing this all out so that you look closely at all resources.
+First, we will start with the deployment peice. Note the container name from the previous lab. Also note the container port: 8080. As mentioned in the lecture, labels are used for matching services to deployments. I recommend typing this all out so that you look closely at all resources.
 
 ```
 apiVersion: apps/v1
