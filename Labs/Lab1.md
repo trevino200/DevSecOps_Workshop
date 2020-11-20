@@ -9,15 +9,13 @@ In order to run the labs, please ensure you have:<br><br>
 
 [Github Account](https://github.com)<br>
 [Dockerhub Account](https://dockerhub.com) <br>
-[Azure Account](https://portal.azure.com) with App Registration that has "Contributor" permission (for later lab)<br>
+
 <br>
 AZ CLI<br>
 Docker<br>
-Kubectl(for later lab)<br>
-Helm(for later lab)<br>
 <br>
 
-This can all be done on either Windows or Linux. Either way, please make sure you have all the tools defined above. I've include configure.sh that installs the tools on linux.
+This can all be done on either Windows or Linux. Either way, please make sure you have all the tools defined above. I've include configure.sh that installs all the tools on linux in the resources folder.
 
 
 ## Part 1 - Web Application
@@ -269,4 +267,6 @@ sudo docker run --rm -d -p 8080:8080 michaelbraunbass/testbadapp:main
 ```
 Browse to the IP address of your Docker machine and see that the changes have been applied. <br><br>
 
-<b>This completes Lab 1</b>
+Bonus Challenge: Try to add a build status badge to your README.md file
+
+<b>This completes Lab 1!</b>
