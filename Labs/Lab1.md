@@ -151,7 +151,7 @@ sudo docker image list
 Finally, let's run the container and check to see if it's working correctly:
 
 ```
-sudo docker run --rm -d -p <DEST_PORT>:8080 <IMAGE_NAME>
+sudo docker run  -d -p <DEST_PORT>:8080 <IMAGE_NAME>
 ```
 Congratulations! You now have a containerized Web Application!
 
@@ -179,7 +179,7 @@ git push
 
 Next, we will build our pipeline!
 
-## CI/CD Pipeline
+## Part 4 - CI/CD Pipeline
 
 For this part of the lab, we are going to build a basic CI/CD pipeline that will build our docker image, test it, and push it to Dockerhub. The CI/CD tool that we will be using is Github Actions, because it is built into Github. The concept is going to be the same for all CI/CD tools.<br>
 
@@ -217,14 +217,6 @@ jobs:
     runs-on: ubuntu-latest
 ```
 
-Define the variables. These must be define in the pipeline.yml file as well as secrets within Github. To add the secrets within github, go to Settings > Secrets. Once you have defined the secrets within Github, you can then reference them in your pipeline script. We are going to define them as environment variables. This token is required to push the image to Dockerhub.
-
-```
-    env:
-      working-directory: .
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-```
-
 Define the first step. This is copying the code to the runner.
 
 ```
@@ -244,7 +236,36 @@ Next, we will run a smoke test to ensure that nothing has broken after making ch
 ```
     - name: Smoke Test
       run: |
-         sudo docker run --rm -d -p 8080:8080 michaelbraunbass/badwebapp
+         sudo docker run  -d -p 8080:8080 michaelbraunbass/badwebapp
          sleep 5
          curl localhost:8080
 ```         
+
+Now it's time to push to DockerHub. We are going to use a pre build Action. [Build-Push-Action](https://docs.github.com/en/free-pro-team@latest/actions/guides/publishing-docker-images#publishing-images-to-docker-hub)
+
+```
+    - name: Push to Docker Hub
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: michaelbraunbass/testbadapp:latest
+        
+```
+
+Commit your changes. Go to Github and navigate to the Actions Tab. You should see your pipeline running. IF everything is done correctly, you will have pushed your image to Dockerhub.
+
+## Testing the CI/CD Pipeline
+
+To test the pipeline, let's make a change to the code. Navigate to VulnerableWebApp > badcommand > templates > badcommand > index.html. <br><br>
+
+Edit the webpage. Change the background color, font size, etc. Commit the changes. <br><br>
+
+Then, pull the image from Dockerhub and run it.
+
+```
+sudo docker pull <dockerhubusername>/badwebapp:main
+sudo docker run --rm -d -p 8080:8080 michaelbraunbass/testbadapp:main
+```
+
+This completes Lab 1.
