@@ -45,4 +45,62 @@ az aks create --name <CLUSTER_NAME> --resource-group <NAME_OF_RESOURCEGROUP> --n
 ``` 
 This step will take some time. Go grab a cup of coffee...<br><br>
 
+Log into the Azure console and examine what has been created. Notice there is an additional resource group that contains all of the components of a Kubernetes cluster.
 
+Once complete, we can authenticate to the cluster. 
+
+```
+az aks get-credentials --name <CLUSTER_NAME> --resource-group <NAME_OF_RESOURCEGROUP>
+```
+
+That's it! You have created a managed Kubernetes cluster. You can now start running kubectl commands against it.<br>
+
+Let's start with:
+
+```
+kubectl get all
+```
+
+## Part 2 - Creating a Kubernetes deployment
+
+We are now going to create a deployment on the Kubernetes cluster.<br>
+
+First, make a namespace for all of the resources to live in.
+
+```
+kubectl create namespace <NAMESPACE_NAME>
+```
+
+Next, create a file, called app.yml. This is where we will define the configuration for our web application. <br>
+
+I recommend typing this all out so that you look closely at all resources.
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: <NAMESPACE_NAME>
+  name: <DEPLOYMENT_NAME>
+  labels:
+    app: vwa
+    tier: frontend
+spec:
+  selector: 
+    matchLabels:
+      app: vwa
+      tier: frontend
+  strategy: 
+    type: Recreate
+  template:
+    metadata:
+      labels: 
+        app: vwa
+        tier: frontend
+    spec:
+      containers:
+      - image:  <docker_image_from_dockerhub>
+        name: vwa
+        ports:
+        - containerPort: 8080
+          name: vwa
+```
