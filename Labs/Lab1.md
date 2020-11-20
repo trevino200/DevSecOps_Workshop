@@ -267,5 +267,6 @@ Then, pull the image from Dockerhub and run it.
 sudo docker pull <dockerhubusername>/badwebapp:main
 sudo docker run --rm -d -p 8080:8080 michaelbraunbass/testbadapp:main
 ```
+Browse to the IP address of your Docker machine and see that the changes have been applied. <br><br>
 
-This completes Lab 1.
+<b>This completes Lab 1</b>
