@@ -7,9 +7,9 @@ The purpose of this lab is to learn how to use Git, Docker and build a simple CI
 
 In order to run the labs, please ensure you have:<br><br>
 
-Github Account<br>
-Dockerhub Account with API key<br>
-Azure Account with App Registration that has "Contributor" permission (for later lab)<br>
+[Github Account](https://github.com)<br>
+[Dockerhub Account](https://dockerhub.com) <br>
+[Azure Account](https://portal.azure.com) with App Registration that has "Contributor" permission (for later lab)<br>
 <br>
 AZ CLI<br>
 Docker<br>
@@ -22,13 +22,16 @@ This can all be done on either Windows or Linux. Either way, please make sure yo
 
 ## Part 1 - Web Application
 
-First, let's create a new repository on Github. It can be a public repository as there is nothing confidential. Once is it created, run the following command:
+First, let's create a new repository on Github. It can be a public repository as there is nothing confidential. At this time, also create a new repository in Dockerhub. The Dockerhub repository will be used later on in the lab.
+
+
+Once is it created, run the following command:
 
 ```
 git clone <your_repository_url>
 ```
 
-Next, download the source code for the python web application. Located HERE. Copy the extracted files into the git repository that you created. The file structure should look like:
+Next, download the source code for the python web application. Located [HERE](../Resources/badwebapp.zip). Copy the extracted files into the git repository that you created. The file structure should look like:
 
 ```
 .
@@ -124,6 +127,7 @@ Next, install the requirements to run the application:
 
 ```
 RUN pip install -r requirements.txt
+RUN chmod +x ./startup.sh
 ```
 
 Finally, expose the port and run the startup script:
@@ -228,3 +232,19 @@ Define the first step. This is copying the code to the runner.
     - name: Checkout Code
       uses: actions/checkout@v1
 ```
+
+Like before, we need to build the container. Lets at that as a step:
+
+```
+    - name: Build Docker Container
+      run: |
+         docker build . -t michaelbraunbass/badwebapp
+```         
+Next, we will run a smoke test to ensure that nothing has broken after making changes.
+```
+    - name: Smoke Test
+      run: |
+         sudo docker run --rm -d -p 8080:8080 michaelbraunbass/badwebapp
+         sleep 5
+         curl localhost:8080
+```         
