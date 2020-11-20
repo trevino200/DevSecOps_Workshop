@@ -8,7 +8,7 @@ The purpose of this lab is to learn how to use Git, Docker and build a simple CI
 In order to run the labs, please ensure you have:<br><br>
 <b> Accounts </b><br>
 [Github Account](https://github.com)<br>
-[Dockerhub Account](https://dockerhub.com) <br>
+[Dockerhub Account](https://hub.docker.com) <br>
 
 <b>Tools:</b><br>
 Docker<br>
