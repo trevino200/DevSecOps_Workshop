@@ -12,6 +12,7 @@ In order to run the labs, please ensure you have:<br><br>
 
 <b>Tools:</b><br>
 Docker<br>
+Python 3<br>
 <br>
 
 This can all be done on either Windows or Linux. Either way, please make sure you have all the tools defined above. I've include configure.sh that installs all the tools on linux in the resources folder.
@@ -262,7 +263,7 @@ Then, pull the image from Dockerhub and run it.
 
 ```
 sudo docker pull <dockerhubusername>/badwebapp:main
-sudo docker run --rm -d -p 8080:8080 michaelbraunbass/testbadapp:main
+sudo docker run -d -p 8080:8080 <dockerhubusername>/badwebapp:main
 ```
 Browse to the IP address of your Docker machine and see that the changes have been applied. <br><br>
 
