@@ -104,8 +104,12 @@ spec:
     matchLabels:
       app: vwa
       tier: frontend
-  strategy: 
-    type: Recreate
+  replicas: 4 
+  strategy:
+      type: RollingUpdate
+      rollingUpdate:
+         maxUnavailable: 25%
+         maxSurge: 1
   template:
     metadata:
       labels: 
@@ -113,7 +117,8 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image:  <docker_image_from_dockerhub>
+      - image:  <docker_image_from_dockerhub>:latest
+        imagePullPolicy: Always
         name: vwa
         ports:
         - containerPort: 8080
@@ -166,4 +171,10 @@ kubectl get all -n <NAMESPACE_NAME>
 
 Under "Service", you should see an external IP Address. If the load balancer has not finished provisioning, it will be in a "PENDING" state. You will have to wait until fully provisioned to see the load balancer. Browse to the IP address and you should be able to see the web application from Lab 1.
 
-## 
+## Testing Continuous Deployment
+
+
+
+```
+kubectl patch deployment mikedeployment -n mike -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"today\"}}}}}"
+```

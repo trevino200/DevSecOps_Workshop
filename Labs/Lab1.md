@@ -228,27 +228,38 @@ Like before, we need to build the container. Lets at that as a step:
 ```
     - name: Build Docker Container
       run: |
-         docker build . -t michaelbraunbass/badwebapp
+         docker build . -t <dockerhubusername>/badwebapp
 ```         
 Next, we will run a smoke test to ensure that nothing has broken after making changes.
 ```
     - name: Smoke Test
       run: |
-         sudo docker run  -d -p 8080:8080 michaelbraunbass/badwebapp
+         sudo docker run  -d -p 8080:8080 <dockerhubusername>/badwebapp
          sleep 5
          curl localhost:8080
 ```         
 
-Now it's time to push to DockerHub. We are going to use a pre build Action. [Build-Push-Action](https://docs.github.com/en/free-pro-team@latest/actions/guides/publishing-docker-images#publishing-images-to-docker-hub)
+Now it's time to push to DockerHub. We are going to use a pre build Action. [Build-Push-Action](https://github.com/docker/build-push-action)
 
 ```
-    - name: Push to Docker Hub
-      uses: docker/build-push-action@v1
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+             
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: michaelbraunbass/testbadapp:latest
-        
+
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: <dockerhubusername>/badwebapp
 ```
 
 Commit your changes. Go to Github and navigate to the Actions Tab. You should see your pipeline running. IF everything is done correctly, you will have pushed your image to Dockerhub.
@@ -262,7 +273,7 @@ Edit the webpage. Change the background color, font size, etc. Commit the change
 Then, pull the image from Dockerhub and run it.
 
 ```
-sudo docker pull <dockerhubusername>/badwebapp:main
+sudo docker pull <dockerhubusername>/badwebapp:latest
 sudo docker run -d -p 8080:8080 <dockerhubusername>/badwebapp:main
 ```
 Browse to the IP address of your Docker machine and see that the changes have been applied. <br><br>
