@@ -6,11 +6,12 @@ The purpose of this lab is to develop a basic understanding of Kubernetes & Helm
 
 ## Setup
 
-In order to run this lab:, please ensure you have:<br><br>
+In order to run this lab, please ensure you have:<br><br>
 <b> Accounts: </b><br>
 [Github Account](https://github.com)<br>
 [Dockerhub Account](https://dockerhub.com) <br>
 [Azure Account](https://portal.azure.com) with App Registration that has "Contributor" permission<br>
+[Check Point CSPM Account](https://secure.dome9.com/) <br><br>
 <b>Tools:</b><br>
 AZ CLI<br>
 Git<br>
@@ -208,4 +209,27 @@ Next, we need to append a unique value as a label. As explained above, the reaso
 ```
          num=$[ ( $RANDOM % 100 )  + 1 ]
          kubectl patch deployment ${K8_DEPLOYMENT} -n $K8_NAMESPACE -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"${num}\"}}}}}"
+```
+
+Once this is complete, please edit the HTML code in the web application and commit the changes. You should see that after the pipeline is finished running, that the web application has updated. It may take some time. Monitor the progress with the kubectl command. Make another change to the HTML and commit again. <br>
+
+<b> You now have a fully functional CI/CD pipeline! </b>
+
+## Part 4 - Using Helm to onboard to Check Point CSPM
+
+Now that we have our Kubernetes cluster working as it should, let's connect it to Check Point CSPM to get some visibility. Navigate to the CSPM Dashboard and run through the onboarding steps for a Kubernetes cluster. This process uses Helm to install the Check Point agents on the Kubernetes cluster. Once onboarded, you can run compliance policies, and even view Log.IC (if you have access to it)
+
+<br><br>
+<b> This concludes Lab 2!</b>
+
+## Cleanup
+
+<b> NOTE: DO NOT RUN THESE COMMANDS IF YOU PLAN TO DO LAB 3</b><br>
+
+To delete the deployment in Azure, run the following commands:
+
+```
+az login 
+az aks delete --name <k8_CLUSTERNAME> --resource-group <RESOURCE_GROUP_NAME> -y
+az group delete -n <RESOURCE_GROUP_NAME> -y
 ```
