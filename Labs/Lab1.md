@@ -277,10 +277,10 @@ Then, pull the image from Dockerhub and run it.
 
 ```
 sudo docker pull <dockerhubusername>/badwebapp:latest
-sudo docker run -d -p 8080:8080 <dockerhubusername>/badwebapp:main
+sudo docker run -d -p 8080:8080 <dockerhubusername>/badwebapp:latest
 ```
 Browse to the IP address of your Docker machine and see that the changes have been applied. <br><br>
 
-Bonus Challenge: Try to add a build status badge to your README.md file
+<b>Bonus Challenge:</b> Try to add a build status badge to your README.md file
 
 <b>This completes Lab 1!</b>
