@@ -13,6 +13,7 @@ In order to run this lab:, please ensure you have:<br><br>
 [Azure Account](https://portal.azure.com) with App Registration that has "Contributor" permission<br>
 <b>Tools:</b><br>
 AZ CLI<br>
+Git<br>
 Docker<br>
 Kubectl<br>
 Helm<br>

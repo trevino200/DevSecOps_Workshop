@@ -12,6 +12,7 @@ In order to run the labs, please ensure you have:<br><br>
 
 <b>Tools:</b><br>
 Docker<br>
+Git <br>
 Python 3<br>
 <br>
 
