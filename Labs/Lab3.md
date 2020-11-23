@@ -34,13 +34,23 @@ First, we must add to the Environment variables:
 
 Open up the pipeline.yml file and insert the following code after the "Checkout Code" step:
 
-```
-#Scan Web Application Code    
-    - name: ShiftLeft Web Application Scan
+```  
+    - name: ShiftLeft Web Application Code Scan
       run: |
             chmod +x ./shiftleft
-            shiftleft code-scan -s .
+            ./shiftleft code-scan -s .
       continue-on-error: true
 ```
 
 I have included the "continue-on-error" flag so that the pipeline will still complete. In a production pipeline, you would not want to do this. 
+
+Let's now add the container scan functionality:
+
+```
+    - name: Shift Left Container Scan
+      run: |
+        docker save michaelbraunbass/badwebapp -o badwebapp.tar
+        ./shiftleft image-scan -t 1800 -i ./badwebapp.tar
+      continue-on-error: true
+
+```
