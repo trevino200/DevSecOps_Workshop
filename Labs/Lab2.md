@@ -82,7 +82,7 @@ These are all the components of a managed Kubernetes cluster from Azure.
 
 We are now going to create a deployment on the Kubernetes cluster.<br>
 
-First, make a namespace for all of the resources to live in.
+First, make a namespace for all of the resources to live in. <b> Make sure that you keep it lower case and no symbols. This is required for a step in the next lab </b>
 
 ```
 kubectl create namespace <NAMESPACE_NAME>
