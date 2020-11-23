@@ -49,7 +49,7 @@ Let's now add the container scan functionality:
 ```
     - name: Shift Left Container Scan
       run: |
-        docker save michaelbraunbass/badwebapp -o badwebapp.tar
+        docker save <docker_hub_user>/badwebapp -o badwebapp.tar
         ./shiftleft image-scan -t 1800 -i ./badwebapp.tar
       continue-on-error: true
 
@@ -67,7 +67,7 @@ In order to add WAAP to the Kubernetes Cluster, we need to change the way traffi
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: mike
+  namespace: <NAMESPACE>
   name: vwa-service
   labels:
     app: vwa
@@ -112,6 +112,15 @@ Enter the following into the field:
 
 <b>This completes Lab 3</b>
 
+## Cleanup
+
+To delete the deployment in Azure, run the following commands:
+
+```
+az login 
+az aks delete --name <k8_CLUSTERNAME> --resource-group <RESOURCE_GROUP_NAME> -y
+az group delete -n <RESOURCE_GROUP_NAME> -y
+```
 
 
 
