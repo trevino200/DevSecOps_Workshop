@@ -171,10 +171,40 @@ kubectl get all -n <NAMESPACE_NAME>
 
 Under "Service", you should see an external IP Address. If the load balancer has not finished provisioning, it will be in a "PENDING" state. You will have to wait until fully provisioned to see the load balancer. Browse to the IP address and you should be able to see the web application from Lab 1.
 
-## Testing Continuous Deployment
+## Part 3 -Testing Continuous Deployment
+
+First, it's important to understand that Kubernetes is not "watching" the container repository to see if there is a new image available. Our cluster is set to always pull new images when a pod is created. To set up a no downtime deployment, we need to trick the cluster into thinking that it needs to rebuild the pods. <br><br>
+
+To get started, add the Microsoft Azure app registration credentials to the repository secrets. Then, define environment variables. Also, for consistency, let's include the Azure Resource Group Name (Created in Part 2). Finally, make sure that you include the name of the Kubernetes deployment (as defined in app.yml), namespace and K8 Cluster Name(Created in Part 2).
+```
+jobs:
+  Pipeline-Job:
+    name: 'My First Pipeline Job'
+    runs-on: ubuntu-latest
+    env:
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      AZ_RG: ${{ secrets.AZ_RG }}
+      K8_CLUSTERNAME: ${{ secrets.K8_CLUSTERNAME }}
+      K8_DEPLOYMENT: ${{ secrets.K8_DEPLOYMENT }}
+      K8_NAMESPACE: ${{ secrets.K8_NAMESPACE }}
+```
+
+Once the Variables have been defined, we must configure the pipeline to authenticate to Azure & the Kubernetes cluster.
+
+```
+    - name: Update K8 Cluster
+      run: |
+         az login  --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} -t ${AZURE_TENANT_ID}
+         az aks get-credentials --name ${K8_CLUSTERNAME} --resource-group ${AZ_RG}
+```
+
+Next, we need to append a unique value as a label. As explained above, the reasoning for this is to have the Kubernetes cluster rebuild the pods. To generate a unique value, we will use the date command.
 
 
 
 ```
-kubectl patch deployment mikedeployment -n mike -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"today\"}}}}}"
+
 ```

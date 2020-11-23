@@ -88,7 +88,7 @@ Next, start the builtin webserver:
 python3 manage.py runserver 0.0.0.0:1337
 ```
 Browse to the ip address of your linux VM and you should see a webpage.<br>
-You can also go to http://<ip_address>:1337/test <br><br>
+You can also go to http://<docker_host_ip_address>:1337/test to see the vulnerable function.<br><br>
 
 Great! The web application is now working. Let's now go and containerize this web application.
 
@@ -151,7 +151,10 @@ Finally, let's run the container and check to see if it's working correctly:
 ```
 sudo docker run  -d -p <DEST_PORT>:8080 <IMAGE_NAME>
 ```
-Congratulations! You now have a containerized Web Application!
+
+Browse to http://<docker_host_ip_address>:8080 and you will see the home page. Also, try going to http://<docker_host_ip_address>:8080/test to see the vulnerable fuction. <br>
+
+Congratulations! You now have a containerized Web Application! 
 
 ## Part 3 - Push to Github
 
