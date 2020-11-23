@@ -7,11 +7,11 @@ The purpose of this lab is to develop a basic understanding of Kubernetes & Helm
 ## Setup
 
 In order to run this lab:, please ensure you have:<br><br>
-
+<b> Accounts: </b><br>
 [Github Account](https://github.com)<br>
 [Dockerhub Account](https://dockerhub.com) <br>
 [Azure Account](https://portal.azure.com) with App Registration that has "Contributor" permission<br>
-<br>
+<b>Tools:</b><br>
 AZ CLI<br>
 Docker<br>
 Kubectl<br>
@@ -204,7 +204,7 @@ Once the Variables have been defined, we must configure the pipeline to authenti
 Next, we need to append a unique value as a label. As explained above, the reasoning for this is to have the Kubernetes cluster rebuild the pods. To generate a unique value, we will use the date command.
 
 
-
 ```
-
+         date_label=$(date)
+         kubectl patch deployment ${K8_DEPLOYMENT} -n $K8_NAMESPACE -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"${date_label}\"}}}}}"
 ```
