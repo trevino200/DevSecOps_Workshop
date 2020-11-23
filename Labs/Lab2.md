@@ -206,6 +206,6 @@ Next, we need to append a unique value as a label. As explained above, the reaso
 
 
 ```
-         num=NUMBER=$[ ( $RANDOM % 100 )  + 1 ]
+         num=$[ ( $RANDOM % 100 )  + 1 ]
          kubectl patch deployment ${K8_DEPLOYMENT} -n $K8_NAMESPACE -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"${num}\"}}}}}"
 ```
