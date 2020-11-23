@@ -202,10 +202,10 @@ Once the Variables have been defined, we must configure the pipeline to authenti
          az aks get-credentials --name ${K8_CLUSTERNAME} --resource-group ${AZ_RG}
 ```
 
-Next, we need to append a unique value as a label. As explained above, the reasoning for this is to have the Kubernetes cluster rebuild the pods. To generate a unique value, we will use the date command.
+Next, we need to append a unique value as a label. As explained above, the reasoning for this is to have the Kubernetes cluster rebuild the pods. To generate a unique value, we will use the RANDOM command.
 
 
 ```
-         date_label=$(date)
-         kubectl patch deployment ${K8_DEPLOYMENT} -n $K8_NAMESPACE -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"${date_label}\"}}}}}"
+         num=NUMBER=$[ ( $RANDOM % 100 )  + 1 ]
+         kubectl patch deployment ${K8_DEPLOYMENT} -n $K8_NAMESPACE -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"${num}\"}}}}}"
 ```
