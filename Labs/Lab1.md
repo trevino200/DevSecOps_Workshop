@@ -279,7 +279,7 @@ Next, we will run a smoke test to ensure that nothing has broken after making ch
          curl localhost:8080
 ```         
 
-Now it's time to push to DockerHub. We are going to use a pre build Action. [Build-Push-Action](https://github.com/docker/build-push-action). To use the secrets, you must add them to the Github repository. In the repository, go to Settings > Secrets.  They must match the variable names in pipeline.yml. After entering those secrets, add the following:
+Now it's time to push to DockerHub. We are going to use a pre build Action. [Build-Push-Action](https://github.com/docker/build-push-action). To use the secrets, you must add them to the Github repository. In the repository on Github.com, go to Settings > Secrets.  They must match the variable names in pipeline.yml. After entering those secrets, add the following:
 
 ```
     - name: Set up QEMU
@@ -351,7 +351,7 @@ jobs:
         tags: <dockerhubusername>/badwebapp
 ```
 
-Commit your changes. Go to Github and navigate to the Actions Tab. You should see your pipeline running. IF everything is done correctly, you will have pushed your image to Dockerhub.
+Commit your changes. Go to Github and navigate to the Actions Tab. You should see your pipeline running. If everything is done correctly, you will have pushed your image to Dockerhub.
 
 ## Testing the CI/CD Pipeline
 
@@ -370,3 +370,14 @@ Browse to the IP address of your Docker machine and see that the changes have be
 <b>Bonus Challenge:</b> Try to add a build status badge to your README.md file
 
 <b>This completes Lab 1!</b>
+
+## Cleanup
+If you've been testing multiple containers, here is how you can remove all running containers:
+
+```
+# Stop all docker containers
+ sudo docker stop $(sudo docker ps -a -q)
+
+# Remove all containers
+sudo docker rm $(sudo docker ps -a -q)
+```

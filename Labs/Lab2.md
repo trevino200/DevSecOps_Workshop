@@ -22,7 +22,7 @@ Helm<br>
 
 This can all be done on either Windows or Linux. Either way, please make sure you have all the tools defined above. I've include configure.sh that installs all the tools on linux in the resources folder.
 
-<b> This lab uses the pipeline built in Lab 1 </b>
+<b> This lab uses the pipeline built in Lab 1. Start in the root of the same working directory specified in Lab 1. </b>
 
 ## Part 1 - Creating and Authenticating to the AKS Cluster
 
@@ -37,13 +37,13 @@ az login
 Next, create a Resource Group to in which to build the AKS cluster. 
 
 ```
-az group create -n <NAME_OF_RESOURCEGROUP> -l <AZURE_LOCATION>
+az group create -n <NAME_OF_RESOURCEGROUP> -l <AZURE_LOCATION->
 ```
 
 Create the AKS cluster. 
 
 ```
-az aks create --name <CLUSTER_NAME> --resource-group <NAME_OF_RESOURCEGROUP> --node-count 3 
+az aks create --name <CLUSTER_NAME> --resource-group <NAME_OF_RESOURCEGROUP> --node-count 3 --generate-ssh-keys
 ``` 
 This step will take some time. Go grab a cup of coffee...<br><br>
 
@@ -88,7 +88,7 @@ First, make a namespace for all of the resources to live in. <b> Make sure that 
 kubectl create namespace <NAMESPACE_NAME>
 ```
 
-Next, create a file in the root of the directory, called app.yml. This is where we will define the configuration for our web application. <br>
+Next, create a file in the root of the directory, called <b>app.yml</b>. This is where we will define the configuration for our web application. <br>
 
 First, we will start with the deployment peice. Note the container name from the previous lab. Also note the container port: 8080. As mentioned in the lecture, labels are used for matching services to deployments. I recommend typing this all out so that you look closely at all resources.
 
@@ -144,7 +144,7 @@ You should now see the resource created by the app.yml file. Let's dig into the 
 kubectl describe pod <POD_NAME> -n <NAMESPACE_NAME>
 ```
 
-To be able to access this resource from the internet we need to expose this with a service. Edit the app.yml file and add the following:
+To be able to access this resource from the internet we need to expose this with a service. Edit the <b>app.yml</b> file and add the following:
 
 ```
 ---
@@ -177,7 +177,7 @@ Under "Service", you should see an external IP Address. If the load balancer has
 
 First, it's important to understand that Kubernetes is not "watching" the container repository to see if there is a new image available. Our cluster is set to always pull new images when a pod is created. To set up a no downtime deployment, we need to trick the cluster into thinking that it needs to rebuild the pods. <br><br>
 
-To get started, add the Microsoft Azure app registration credentials to the repository secrets. Then, define environment variables. Also, for consistency, let's include the Azure Resource Group Name (Created in Part 2). Finally, make sure that you include the name of the Kubernetes deployment (as defined in app.yml), namespace and K8 Cluster Name(Created in Part 2).
+To get started, add the Microsoft Azure app registration credentials to the repository secrets. Then, define environment variables. Also, for consistency, let's include the Azure Resource Group Name (Created in Part 2). Finally, make sure that you include the name of the Kubernetes deployment (as defined in app.yml), namespace and K8 Cluster Name(Created in Part 2). Edit <b>pipeline.yml</b>
 ```
 jobs:
   Pipeline-Job:
@@ -188,7 +188,7 @@ jobs:
       AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-      AZ_RG: ${{ secrets.AZ_RG }}
+      AZ_RG: ${{ secrets.AZ_RG }} #Azure Resource Group Name
       K8_CLUSTERNAME: ${{ secrets.K8_CLUSTERNAME }}
       K8_DEPLOYMENT: ${{ secrets.K8_DEPLOYMENT }}
       K8_NAMESPACE: ${{ secrets.K8_NAMESPACE }}
@@ -207,6 +207,72 @@ Next, we need to append a unique value as a label. As explained above, the reaso
 
 
 ```
+         num=$[ ( $RANDOM % 100 )  + 1 ]
+         kubectl patch deployment ${K8_DEPLOYMENT} -n $K8_NAMESPACE -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"${num}\"}}}}}"
+```
+
+The final pipeline file should look like this:
+```
+name: "My First Pipeline"
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  Pipeline-Job:
+    name: 'My First Pipeline Job'
+    runs-on: ubuntu-latest
+    env:
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+      AZ_RG: ${{ secrets.AZ_RG }}
+      K8_CLUSTERNAME: ${{ secrets.K8_CLUSTERNAME }}
+      K8_DEPLOYMENT: ${{ secrets.K8_DEPLOYMENT }}
+      K8_NAMESPACE: ${{ secrets.K8_NAMESPACE }}
+      CHKP_CLOUDGUARD_ID: ${{ secrets.CHKP_CLOUDGUARD_ID }}
+      CHKP_CLOUDGUARD_SECRET: ${{ secrets.CHKP_CLOUDGUARD_SECRET }}
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v1
+      
+    - name: Build Docker Container
+      run: |
+         sudo docker build . -t <dockerhub_username>/badwebapp
+         
+    - name: Smoke Test
+      run: |
+         sudo docker run -d -p 8080:8080 <dockerhub_username>/badwebapp
+         sleep 4
+         curl localhost:8080
+       
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+             
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: <dockerhub_username>/testbadapp:latest
+        
+    - name: Update K8 Cluster
+      run: |
+         az login  --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} -t ${AZURE_TENANT_ID}
+         az aks get-credentials --name ${K8_CLUSTERNAME} --resource-group ${AZ_RG}
          num=$[ ( $RANDOM % 100 )  + 1 ]
          kubectl patch deployment ${K8_DEPLOYMENT} -n $K8_NAMESPACE -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"${num}\"}}}}}"
 ```
