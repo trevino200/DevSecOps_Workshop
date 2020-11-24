@@ -213,7 +213,7 @@ Finally, let's push our committed changes to Github
 git push
 ```
 
-<b>Note:</b> You can set up SSH authencation by follwing these steps. [SSH Authentication for Github](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
+<b>Note:</b> You can set up SSH authencation by following these steps. [SSH Authentication for Github](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
 
 Next, we will build our pipeline!
 
@@ -221,7 +221,7 @@ Next, we will build our pipeline!
 
 For this part of the lab, we are going to build a basic CI/CD pipeline that will build our docker image, test it, and push it to Dockerhub. The CI/CD tool that we will be using is Github Actions, because it is built into Github. The concept is going to be the same for all CI/CD tools.<br>
 
-First, lets create the required directory. 
+First, lets create the required directory in the root of your folder. 
 
 ```
 mkdir .github
@@ -230,7 +230,7 @@ mkdir workflows
 cd workflows
 ```
 
-Navigate to the new directory and create a file called pipeline.ynl. Open that file in a text editor. <br>
+Navigate to the new directory and create a file called <b>pipeline.yml</b>. Open that file in a text editor. <br>
 <b> NOTE: Follow along to see the required indentation. YAML is very specific about whitespace.</b>
 
 Let's begin by defining the name and the trigger for the pipeline:
@@ -282,6 +282,55 @@ Next, we will run a smoke test to ensure that nothing has broken after making ch
 Now it's time to push to DockerHub. We are going to use a pre build Action. [Build-Push-Action](https://github.com/docker/build-push-action)
 
 ```
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+             
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: <dockerhubusername>/badwebapp
+```
+
+Your pipeline.yml will look like this:
+
+```
+name: "My First Pipeline"
+
+on:
+  push:
+    branches:
+    - main
+    
+jobs:
+  Pipeline-Job:
+    name: 'My First Pipeline Job'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v1
+      
+    - name: Build Docker Container
+      run: |
+         docker build . -t <dockerhubusername>/badwebapp
+         
+    - name: Smoke Test
+      run: |
+         sudo docker run  -d -p 8080:8080 <dockerhubusername>/badwebapp
+         sleep 5
+         curl localhost:8080
+         
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
       
