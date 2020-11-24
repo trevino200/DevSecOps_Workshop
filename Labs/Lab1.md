@@ -21,13 +21,12 @@ This can all be done on either Windows or Linux. Either way, please make sure yo
 
 ## Part 1 - Web Application
 
-First, let's create a new repository on Github. It can be a public repository as there is nothing confidential. At this time, also create a new repository in Dockerhub. The Dockerhub repository will be used later on in the lab.
-
+First, fork this respository: [badwebapp](https://github.com/metalstormbass/badwebapp)
 
 Once is it created, run the following command:
 
 ```
-git clone <your_repository_url>
+git clone https://github.com/<YOUR_GITHUB_USERNAME>/badwebapp.git
 ```
 
 Next, download the source code for the python web application. Located [HERE](../Resources/badwebapp.zip). Copy the extracted files into the git repository that you created. The file structure should look like:
