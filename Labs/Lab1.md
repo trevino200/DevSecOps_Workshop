@@ -95,7 +95,7 @@ Great! The web application is now working. Let's now go and containerize this we
 
 ## Part 2 - Using Docker
 
-In order to containerize our application, we need to create a Dockerfile. This file is responsible for choosing the base image and running any required configuration. Start by creating a Dockerfile and open it in a text editor. We will build up the docker file.<br><br>
+In order to containerize our application, we need to create a Dockerfile. This file is responsible for choosing the base image and running any required configuration. Start by creating a Dockerfile <b>in the root of the directory</b> and open it in a text editor. We will build up the docker file.<br><br>
 
 
 Open "Dockerfile" and lets being by defining a base image to build our configuration on:
