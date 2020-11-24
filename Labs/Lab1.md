@@ -279,7 +279,7 @@ Next, we will run a smoke test to ensure that nothing has broken after making ch
          curl localhost:8080
 ```         
 
-Now it's time to push to DockerHub. We are going to use a pre build Action. [Build-Push-Action](https://github.com/docker/build-push-action)
+Now it's time to push to DockerHub. We are going to use a pre build Action. [Build-Push-Action](https://github.com/docker/build-push-action). To use the secrets, you must add them to the Github repository. In the repository, go to Settings > Secrets.  They must match the variable names in pipeline.yml. After entering those secrets, add the following:
 
 ```
     - name: Set up QEMU
