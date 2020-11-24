@@ -187,7 +187,15 @@ Congratulations! You now have a containerized Web Application!
 
 Let's now push our code to Github. <br><br>
 
-First add the changes you want to commit. The following command all of the changes.
+<b>Note:</b> You may have some issues if you email address is set to private or if you have two factor authentication enabled. 
+
+First, set up git, run:
+```
+git config -global user.email <your_githube_mailaddress>
+git config -global user.name <your_name>
+```
+
+You must add the changes you want to commit. The following command will add all of the changes.
 
 ```
 git add -A
@@ -204,6 +212,8 @@ Finally, let's push our committed changes to Github
 ```
 git push
 ```
+
+<b>Note:</b> You can set up SSH authencation by follwing these steps. [SSH Authentication for Github](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account)
 
 Next, we will build our pipeline!
 
