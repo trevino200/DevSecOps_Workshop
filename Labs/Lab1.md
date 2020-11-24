@@ -174,6 +174,11 @@ Finally, let's run the container and check to see if it's working correctly:
 ```
 sudo docker run  -d -p <DEST_PORT>:8080 <IMAGE_NAME>
 ```
+Confirm that image is running"
+
+```
+sudo docker image list
+```
 
 Browse to http://<docker_host_ip_address>:8080 and you will see the home page. Also, try going to http://<docker_host_ip_address>:8080/test to see the vulnerable fuction. <br>
 
