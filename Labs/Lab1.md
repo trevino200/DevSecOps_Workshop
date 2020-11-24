@@ -29,7 +29,7 @@ Once is it created, run the following command:
 git clone https://github.com/<YOUR_GITHUB_USERNAME>/badwebapp.git
 ```
 
-Next, download the source code for the python web application. Located [HERE](../Resources/badwebapp.zip). Copy the extracted files into the git repository that you created. The file structure should look like:
+Navigate to the new directory. The file structure should look like:
 
 ```
 .
