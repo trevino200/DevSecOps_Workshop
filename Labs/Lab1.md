@@ -95,10 +95,10 @@ Great! The web application is now working. Let's now go and containerize this we
 
 ## Part 2 - Using Docker
 
-In order to containerize our application, we need to create a Dockerfile. This file is responsible for choosing the base image and running any required configuration. Start by creating a Dockerfile and open it in a text editor. <br><br>
+In order to containerize our application, we need to create a Dockerfile. This file is responsible for choosing the base image and running any required configuration. Start by creating a Dockerfile and open it in a text editor. We will build up the docker file.<br><br>
 
 
-First, let's choose a base image to build our configuration on:
+Open "Dockerfile" and lets being by defining a base image to build our configuration on:
 ```
 #Dockerfile
 FROM  python:3.8-slim-buster
@@ -135,7 +135,29 @@ Finally, expose the port and run the startup script:
 EXPOSE 8080
 CMD ["./startup.sh"]
 ```
-We now have a complete Dockerfile. Build the image by running this command:
+We now have a complete Dockerfile. The complete Dockerfile should look like:
+
+```
+#Dockerfile
+FROM python:3.8-slim-buster
+
+#Install NGINX
+RUN apt-get update && apt-get install nginx -y --no-install-recommends
+COPY nginx.default /etc/nginx/sites-available/default
+
+RUN mkdir /VulnerableWebApp
+COPY . /VulnerableWebApp
+ 
+WORKDIR /VulnerableWebApp/VulnerableWebApp
+
+RUN pip install -r requirements.txt
+RUN chmod +x ./startup.sh
+
+EXPOSE 8080
+CMD ["./startup.sh"]
+```
+
+Build the image by running this command:
 
 ```
 sudo docker build . -t <dockerhubusername>/badwebapp
