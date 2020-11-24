@@ -119,7 +119,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image:  <docker_image_from_dockerhub>:latest
+      - image:  <dockerhubusername>/badwebapp:latest
         imagePullPolicy: Always
         name: vwa
         ports:
