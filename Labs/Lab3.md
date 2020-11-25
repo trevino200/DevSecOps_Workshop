@@ -44,7 +44,7 @@ Open up the pipeline.yml file and insert the following code after the "Checkout 
 
 I have included the "continue-on-error" flag so that the pipeline will still complete. In a production pipeline, you would not want to do this. 
 
-Let's now add the container scan functionality:
+Let's now add the container scan functionality after the Build Container step:
 
 ```
     - name: Shift Left Container Scan
