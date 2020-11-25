@@ -211,7 +211,7 @@ Next, we need to append a unique value as a label. As explained above, the reaso
          kubectl patch deployment ${K8_DEPLOYMENT} -n $K8_NAMESPACE -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"${num}\"}}}}}"
 ```
 
-The final pipeline file should look like this:
+The final <b>pipeline.yml</b> file should look like this:
 ```
 name: "My First Pipeline"
 
