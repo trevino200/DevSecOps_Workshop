@@ -102,7 +102,7 @@ helm install cpwaap CheckPoint-WAAP-0.1.5.tgz --namespace=<NAMESPACE_NAME> --set
 
 Browse to the URL which has been defined in the step above and you should see our web app. In the [Infinity Next Portal](httpS://portal.checkpoint.com), you can plug in that URL into the "Assets" page. Once you have configured the asset, click on "Enforce" <br><br>
 
-Once the enforcement is completed, then navigate to http://<NAMESPACE_NAME>.<LOCATION_OF_RESOURCEGROUP>.cloudapp.azure.com/test<br>
+When the enforcement process has completed, navigate to http://<NAMESPACE_NAME>.<LOCATION_OF_RESOURCEGROUP>.cloudapp.azure.com/test<br>
 
 Enter the following into the field:
 
