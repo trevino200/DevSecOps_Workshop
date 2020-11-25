@@ -295,7 +295,6 @@ Now that we have our Kubernetes cluster working as it should, let's connect it t
 To delete the deployment in Azure, run the following commands:
 
 ```
-az login 
 az aks delete --name <k8_CLUSTERNAME> --resource-group <RESOURCE_GROUP_NAME> -y
 az group delete -n <RESOURCE_GROUP_NAME> -y
 ```
