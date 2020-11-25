@@ -100,7 +100,7 @@ This command packages the helm chart. Next, we can deploy it:
 helm install cpwaap CheckPoint-WAAP-0.1.5.tgz --namespace=<NAMESPACE_NAME> --set mysvcname=vwa-service --set mysvcport=80 --set nanoToken=<CPNANO_TOKEN> --set appURL=<NAMESPACE_NAME>.<LOCATION_OF_RESOURCEGROUP>.cloudapp.azure.com
 ```
 
-Browse to the URL which has been defined in the step above and you should see our web app. Now, you can plug in that URL into the "Assets" page in the Infinity Next portal. Select "Enforce" <br><br>
+Browse to the URL which has been defined in the step above and you should see our web app. In the [Infinity Next Portal](httpS://portal.checkpoint.com), you can plug in that URL into the "Assets" page. Once you have configured the asset, click on "Enforce" <br><br>
 
 Once the enforcement is completed, then navigate to http://<NAMESPACE_NAME>.<LOCATION_OF_RESOURCEGROUP>.cloudapp.azure.com/test<br>
 
